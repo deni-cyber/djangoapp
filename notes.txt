@@ -91,3 +91,7 @@
 
 
 
+steps to hell.
+1. initialize the db by making migrations
+2. create super user and note down the details
+3. 
