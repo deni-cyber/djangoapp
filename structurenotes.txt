@@ -1,0 +1,76 @@
+super user details
+username----description
+password----kiongozi
+
+
+
+App	------------Models
+............................................
+users	--------Profile, Address
+products	-----roduct, Category, Review
+cart	---------Cart, CartItem
+orders	---------Order, OrderItem
+payments	-----Payment
+shipping	-----Shipping, ShippingAddress
+storefront	-----Uses data from other apps, focuses on views/templates
+
+----------detailed------------
+users	Profile	- user: OneToOneField (links to User)
+- address: CharField
+- phone: CharField
+- date_of_birth: DateField (optional)
+Address	- user: ForeignKey (links to User)
+- address_line: CharField
+- city: CharField
+- state: CharField
+- postal_code: CharField
+- country: CharField
+- is_default: BooleanField (default=False)
+products	Category	- name: CharField (unique)
+- slug: SlugField (unique)
+- description: TextField (optional)
+Product	- name: CharField
+- slug: SlugField (unique)
+- description: TextField
+- price: DecimalField
+- stock: PositiveIntegerField
+- image: ImageField
+- category: ForeignKey (links to Category)
+- created_at: DateTimeField
+- updated_at: DateTimeField
+Review	- product: ForeignKey (links to Product)
+- user: ForeignKey (links to User)
+- rating: PositiveIntegerField
+- comment: TextField
+- created_at: DateTimeField
+cart	Cart	- user: ForeignKey (links to User)
+- created_at: DateTimeField
+CartItem	- cart: ForeignKey (links to Cart)
+- product: ForeignKey (links to Product)
+- quantity: PositiveIntegerField (default=1)
+- price: DecimalField
+orders	Order	- user: ForeignKey (links to User)
+- total_amount: DecimalField
+- status: CharField (choices: Pending, Shipped, Delivered, Cancelled)
+- shipping_address: CharField
+- created_at: DateTimeField
+OrderItem	- order: ForeignKey (links to Order)
+- product: ForeignKey (links to Product)
+- quantity: PositiveIntegerField
+- price: DecimalField
+payments	Payment	- order: OneToOneField (links to Order)
+- amount: DecimalField
+- payment_method: CharField (choices: Credit Card, PayPal, Stripe)
+- status: CharField (default='Pending')
+- payment_date: DateTimeField
+shipping	Shipping	- order: OneToOneField (links to Order)
+- provider: CharField
+- tracking_number: CharField (optional)
+- estimated_delivery: DateTimeField
+ShippingAddress	- order: OneToOneField (links to Order)
+- address_line: CharField
+- city: CharField
+- state: CharField
+- postal_code: CharField
+- country: CharField
+storefront	(No Models)	- Uses Product, Category, Cart, Order, and Review models for views/templates
