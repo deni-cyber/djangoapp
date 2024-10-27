@@ -22,7 +22,9 @@ work plan and progress map
 
 ### **3. User Authentication (Week 2)**
 - **Task 3.1**: Implement user registration and login functionality.
-- **Task 3.2**: Add social authentication (Google, Facebook, etc.), if necessary.
+
+'ill get back to this soon'----- **Task 3.2**: Add social authentication (Google, Facebook, etc.), if necessary.
+
 - **Task 3.3**: Create a user profile page with account settings.
 - **Task 3.4**: Secure user authentication using Django’s built-in authentication system.
 

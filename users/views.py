@@ -1,9 +1,14 @@
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login, authenticate, logout
 from django.contrib.auth.forms import AuthenticationForm
 from .forms import UserRegistrationForm
 from django.contrib import messages
+
+from django.contrib.auth.decorators import login_required
+from .forms import ProfileUpdateForm, AddressForm
+from .models import Profile, Address
+
 
 # User Registration View
 def register(request):
@@ -40,3 +45,45 @@ def login_view(request):
 def custom_logout_view(request):
     logout(request)
     return render(request, 'users/logout.html')  # Redirect to login page after logout
+
+
+
+@login_required
+def profile_view(request):
+    profile, created = Profile.objects.get_or_create(user=request.user)
+    
+    if request.method == 'POST':
+        profile_form = ProfileUpdateForm(request.POST, instance=profile)
+        if profile_form.is_valid():
+            profile_form.save()
+            return redirect('profile')
+    else:
+        profile_form = ProfileUpdateForm(instance=profile)
+
+    addresses = Address.objects.filter(user=request.user)
+    context = {
+        'profile_form': profile_form,
+        'addresses': addresses,
+    }
+    return render(request, 'users/profile.html', context)
+
+@login_required
+def add_address(request):
+    if request.method == 'POST':
+        form = AddressForm(request.POST)
+        if form.is_valid():
+            address = form.save(commit=False)
+            address.user = request.user
+            address.save()
+            return redirect('profile')
+    else:
+        form = AddressForm()
+    return render(request, 'users/add_address.html', {'form': form})
+
+@login_required
+def delete_address(request, address_id):
+    address = get_object_or_404(Address, id=address_id, user=request.user)
+    if request.method == 'POST':
+        address.delete()
+        return redirect('profile')
+    return render(request, 'users/delete_address.html', {'address': address})
