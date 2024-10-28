@@ -136,3 +136,6 @@ LOGIN_REDIRECT_URL = 'home'  # Where to redirect after login
 LOGOUT_REDIRECT_URL = 'login'  # Where to redirect after logout
 
 LOGIN_URL = '/users/login/'  # Redirect to this URL for login
+
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Ends the session when the user closes the browser
+SESSION_COOKIE_AGE = 86400  # Sets session expiration to 24 hours (in seconds)

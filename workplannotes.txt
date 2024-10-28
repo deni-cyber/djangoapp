@@ -20,6 +20,8 @@ work plan and progress map
 \\\\\\\done////////
 
 
+
+
 ### **3. User Authentication (Week 2)**
 - **Task 3.1**: Implement user registration and login functionality.
 
@@ -27,6 +29,9 @@ work plan and progress map
 
 - **Task 3.3**: Create a user profile page with account settings.
 - **Task 3.4**: Secure user authentication using Django’s built-in authentication system.
+\\\\\\\\done////////
+
+
 
 ### **4. Product Management (Week 3)**
 - **Task 4.1**: Implement product creation, update, and deletion by admin.

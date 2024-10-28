@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>{{ product.name }}</h2>
+
+<div class="product-details">
+    <p><strong>Description:</strong> {{ product.description }}</p>
+    <p><strong>Price:</strong> ${{ product.price }}</p>
+    <p><strong>Stock:</strong> {{ product.stock }}</p>
+    <p><strong>Category:</strong> {{ product.category.name }}</p>
+
+    <!-- Add-to-Cart Button (if applicable) -->
+    <form action="#" method="post">
+        {% csrf_token %}
+        <button type="submit">Add to Cart</button>
+    </form>
+</div>
+
+<a href="{% url 'product_list' %}">Back to Products</a>
+{% endblock %}

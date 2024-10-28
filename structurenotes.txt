@@ -1,3 +1,7 @@
+<a href="{% url 'product_detail' product.id %}">View Details</a>
+
+
+
 super user details
 username----description
 password----kiongozi
