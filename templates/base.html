@@ -6,7 +6,7 @@
     <title>{% block title %}My E-commerce Site{% endblock %}</title>
     <style>
         body {
-            background-color: green;
+            background-color: rgb(128, 41, 0);
             text-align: center;
             color: white;
         }
@@ -27,6 +27,10 @@
         h2{
             color: oldlace;
         }
+        form{
+            text-align: left;
+            margin-left: 30%;
+        }
 
     </style>
 
@@ -36,13 +40,15 @@
         <h1>KeBanda E-commerce Site</h1>
         <nav>
             <a href="{% url 'home' %}">Home</a>
-            <span>|    |</span>
-            <a href="{% url 'profile' %}">Profile</a>
             <a href="{% url 'product_list' %}">Products</a>
-            <span>|    |</span>
+
+            {% if user.is_authenticated %}
+            <a href="{% url 'logout' %}">LogOut</a>
+            <a href="{% url 'profile' %}">Profile</a>
+            {% else %}
             <a href="{% url 'login' %}">LogIn</a>
             <a href="{% url 'register' %}">Register</a>
-            <a href="{% url 'logout' %}">LogOut</a>
+            {% endif %}
 
         </nav>
     </header>
