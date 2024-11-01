@@ -38,6 +38,9 @@ work plan and progress map
 - **Task 4.2**: Set up product listings with pagination and filtering.
 - **Task 4.3**: Implement product detail pages.
 - **Task 4.4**: Create models for product reviews and ratings.
+\\\\\\\\\DONE/////////
+
+
 
 ### **5. Cart and Checkout System (Week 4)**
 - **Task 5.1**: Design and implement a shopping cart system (add, update, delete items).

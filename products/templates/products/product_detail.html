@@ -7,9 +7,22 @@
     <p><strong>Price:</strong> ${{ product.price }}</p>
     <p><strong>Stock:</strong> {{ product.stock }}</p>
     <p><strong>Category:</strong> {{ product.category.name }}</p>
+    <h3>Average Rating: {{ product.average_rating }}</h3>
 
-    <!-- Add-to-Cart Button (if applicable) -->
-    <form action="#" method="post">
+    <h3>Customer Reviews:</h3>
+    <div class="reviews">
+        {% for review in product.reviews.all %}
+            <div class="review">
+                <p><strong>{{ review.user.username }}:</strong> {{ review.comment }}</p>
+                <p><small>Posted on {{ review.created_at }}</small></p>
+            </div>
+        {% empty %}
+            <p>No reviews yet. Be the first to review!</p>
+        {% endfor %}
+    </div>
+
+
+    <form action="{% url 'add_to_cart' product.id %}" method="post">
         {% csrf_token %}
         <button type="submit">Add to Cart</button>
     </form>

@@ -6,8 +6,17 @@ class Cart(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='cart')
     created_at = models.DateTimeField(auto_now_add=True)
 
+    def total_price(self):
+        return sum(item.total_price() for item in self.items.all())
+
 class CartItem(models.Model):
     cart = models.ForeignKey(Cart, on_delete=models.CASCADE, related_name='items')
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=1)
-    price = models.DecimalField(max_digits=10, decimal_places=2)
+
+    def total_price(self):
+        return self.product.price * self.quantity  # Uses product's price
+
+    def __str__(self) -> str:
+        return f"{self.product.name} - Quantity: {self.quantity}"
+

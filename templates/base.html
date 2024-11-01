@@ -6,30 +6,27 @@
     <title>{% block title %}My E-commerce Site{% endblock %}</title>
     <style>
         body {
-            background-color: orangered;
+            background-color: green;
             text-align: center;
+            color: white;
         }
 
         div{
             border: solid white 1px;
         }
-    /* In your CSS file */
-    .pagination {
-        display: flex;
-        justify-content: center;
-        margin-top: 20px;
-    }
 
-    .pagination .step-links a {
-        padding: 5px 10px;
-        margin: 0 5px;
-        text-decoration: none;
-        color: #333;
-    }
-
-    .pagination .step-links .current-page {
-        font-weight: bold;
-    }
+        nav{
+            color: yellowgreen;
+        }
+        a{
+            color: rgb(170, 255, 0);
+        }
+        h1{
+            color: yellow;
+        }
+        h2{
+            color: oldlace;
+        }
 
     </style>
 
@@ -39,10 +36,14 @@
         <h1>KeBanda E-commerce Site</h1>
         <nav>
             <a href="{% url 'home' %}">Home</a>
+            <span>|    |</span>
             <a href="{% url 'profile' %}">Profile</a>
             <a href="{% url 'product_list' %}">Products</a>
+            <span>|    |</span>
+            <a href="{% url 'login' %}">LogIn</a>
+            <a href="{% url 'register' %}">Register</a>
             <a href="{% url 'logout' %}">LogOut</a>
-            <a href="{% url 'register' %}">Register Now</a>
+
         </nav>
     </header>
 
