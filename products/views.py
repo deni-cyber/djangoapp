@@ -9,6 +9,7 @@ def product_list(request):
     category_filter = request.GET.get('category', None)
     products = Product.objects.all()
 
+
     if category_filter:
         products = products.filter(category__id=category_filter)
 
@@ -29,7 +30,9 @@ def product_list(request):
 
 def product_detail(request, product_id):
     product = get_object_or_404(Product, id=product_id)
+    images = product.images.all()  # Access all related images
     context = {
         'product': product,
+        'images': images
     }
     return render(request, 'products/product_detail.html', context)

@@ -3,6 +3,11 @@
 <h2>{{ product.name }}</h2>
 
 <div class="product-details">
+    <div class="product-gallery">
+        {% for image in product.images.all %}
+            <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" />
+        {% endfor %}
+    </div>
     <p><strong>Description:</strong> {{ product.description }}</p>
     <p><strong>Price:</strong> ${{ product.price }}</p>
     <p><strong>Stock:</strong> {{ product.stock }}</p>

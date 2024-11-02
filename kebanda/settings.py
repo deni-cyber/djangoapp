@@ -40,10 +40,10 @@ INSTALLED_APPS = [
     'cart',
     'orders',
     'payments',
-    'products',
     'shipping',
     'storefront',
     'users',
+    'products',
 ]
 
 MIDDLEWARE = [
@@ -139,3 +139,10 @@ LOGIN_URL = '/users/login/'  # Redirect to this URL for login
 
 SESSION_EXPIRE_AT_BROWSER_CLOSE = True  # Ends the session when the user closes the browser
 SESSION_COOKIE_AGE = 86400  # Sets session expiration to 24 hours (in seconds)
+
+
+# MEDIA_ROOT is the path where uploaded files are stored
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media') 
+
+# MEDIA_URL is the URL that serves the media files
+MEDIA_URL = '/media/'
