@@ -8,7 +8,7 @@ class Profile(models.Model):
     date_of_birth = models.DateField(null=True, blank=True)
 
     def __str__(self) -> str:
-        return self.user 
+        return self.user.username 
 
 class Address(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name='addresses')
@@ -18,4 +18,4 @@ class Address(models.Model):
     is_default = models.BooleanField(default=False)
 
     def __str__(self) -> str:
-        return self.address_line 
+        return self.user.username 
