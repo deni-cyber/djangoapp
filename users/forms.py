@@ -21,9 +21,9 @@ class UserRegistrationForm(UserCreationForm):
 class ProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = Profile
-        fields = ['address', 'phone', 'date_of_birth']
+        fields = ['phone', 'date_of_birth']
 
 class AddressForm(forms.ModelForm):
     class Meta:
         model = Address
-        fields = ['address_line', 'county', 'town', 'is_default']
+        fields = [ 'county', 'town', 'street','is_default']

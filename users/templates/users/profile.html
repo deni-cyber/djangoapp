@@ -1,21 +1,29 @@
 {% extends "base.html" %}
 {% block content %}
 <h2>User Profile</h2>
-<form method="POST">
-    {% csrf_token %}
-    {{ profile_form.as_p }}
-    <button type="submit">Update Profile</button>
-</form>
 
-<h3>Addresses</h3>
-<ul>
-    {% for address in addresses %}
-        <li>{{ address.address_line }}, {{ address.town }}, {{ address.county }}
-            <a href="{% url 'delete_address' address.id %}">Delete</a>
-        </li>
-    {% empty %}
-        <li>No addresses added.</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'add_address' %}">Add New Address</a>
+<div>
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.profile.email }}</p>
+    <p>Phone: {{ user.profile.phone }}</p>
+    <p>Date of Birth: {{ user.profile.date_of_birth }}</p>
+
+    <a href="{% url 'update_profile' %}">Update Profile Info</a>
+
+</div>
+
+<div>
+    <h3>Addresses</h3>
+    <ul>
+        {% for address in addresses %}
+            <li>{{ address.address_line }}, {{ address.town }}, {{ address.county }}
+                <a href="{% url 'delete_address' address.id %}">Delete</a>
+            </li>
+        {% empty %}
+            <li>No addresses added.</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'add_address' %}">Add New Address</a>
+</div>
+
 {% endblock %}

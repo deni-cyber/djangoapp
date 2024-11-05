@@ -50,6 +50,16 @@ def custom_logout_view(request):
 
 @login_required
 def profile_view(request):
+    addresses = Address.objects.filter(user=request.user)
+    context = {
+        'profile':Profile,
+        'addresses': addresses,
+    }
+    return render(request, 'users/profile.html', context)
+
+
+@login_required
+def update_profile_view(request):
     profile, created = Profile.objects.get_or_create(user=request.user)
     
     if request.method == 'POST':
@@ -61,11 +71,11 @@ def profile_view(request):
         profile_form = ProfileUpdateForm(instance=profile)
 
     addresses = Address.objects.filter(user=request.user)
+    addresses = Address.objects.filter(user=request.user)
     context = {
         'profile_form': profile_form,
-        'addresses': addresses,
     }
-    return render(request, 'users/profile.html', context)
+    return render(request, 'users/update_profile.html', context)
 
 @login_required
 def add_address(request):
