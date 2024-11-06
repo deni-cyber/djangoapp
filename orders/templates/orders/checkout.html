@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Checkout</h2>
+
+<form method="POST" action="{% url 'orders:checkout' %}">
+    {% csrf_token %}
+
+    <h3>Select Delivery Method</h3>
+    <label>
+        <input type="radio" name="delivery_method" value="door_delivery" id="door_delivery" required>
+        Door Delivery
+    </label>
+    <label>
+        <input type="radio" name="delivery_method" value="pickup" id="pickup" required>
+        Pickup Point
+    </label>
+
+    <div id="door_delivery_options" style="display: none;">
+        <h4>Choose Your Address</h4>
+        {% if addresses %}
+            <select name="address" required>
+                {% for address in addresses %}
+                    <option value="{{ address.id }}">{{ address.address_line }}, {{ address.town }}, {{ address.county }}</option>
+                {% endfor %}
+            </select>
+        {% else %}
+            <p>No saved addresses found. Please <a href="{% url 'users:add_address' %}">add an address</a>.</p>
+        {% endif %}
+    </div>
+
+    <div id="pickup_options" style="display: none;">
+        <h4>Select Pickup Point</h4>
+        <select name="pickup_point" required>
+            {% for pickup in pickup_points %}
+                <option value="{{ pickup.id }}">{{ pickup.name }} - {{ pickup.location }}</option>
+            {% endfor %}
+        </select>
+    </div>
+
+    <button type="submit">Proceed to Order Summary</button>
+</form>
+
+<script>
+    // JavaScript to toggle between door delivery and pickup options
+    document.getElementById('door_delivery').addEventListener('change', function() {
+        document.getElementById('door_delivery_options').style.display = 'block';
+        document.getElementById('pickup_options').style.display = 'none';
+    });
+
+    document.getElementById('pickup').addEventListener('change', function() {
+        document.getElementById('door_delivery_options').style.display = 'none';
+        document.getElementById('pickup_options').style.display = 'block';
+    });
+</script>
+{% endblock %}

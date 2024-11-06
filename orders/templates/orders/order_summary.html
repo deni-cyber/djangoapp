@@ -1,0 +1,51 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Order Summary</h2>
+
+{% if order %}
+<div>
+    <h3>Order #{{ order.id }}</h3>
+    <p><strong>Date:</strong> {{ order.created_at|date:"F j, Y, g:i a" }}</p>
+    <p><strong>Status:</strong> {{ order.get_status_display }}</p>
+    
+    <h3>Delivery Method</h3>
+    <p>
+        {% if order.delivery_method == 'door_delivery' %}
+            <strong>Door Delivery</strong>
+            <br>
+            <strong>Address:</strong> 
+            {{ order.address.address_line }}, {{ order.address.town }}, {{ order.address.county }}
+        {% elif order.delivery_method == 'pickup' %}
+            <strong>Pickup Point</strong>
+            <br>
+            <strong>Pickup Location:</strong> 
+            {{ order.pickup_point.name }}, {{ order.pickup_point.location }}
+        {% endif %}
+    </p>
+</div>
+ <div>
+    <h3>Order Items</h3>
+    <ul>
+        {% for item in order.items.all %}
+            <li>
+                {{ item.product.name }} - Quantity: {{ item.quantity }} - Price: ${{ item.price }} each
+                <br>
+                <strong>Total:</strong> ${{ item.total_price }}
+            </li>
+        {% empty %}
+            <li>No items found in this order.</li>
+        {% endfor %}
+    </ul>
+ </div>
+
+<div>
+    <h3>Total Amount</h3>
+    <p><strong>$ {{ order.total_amount }}</strong></p>
+</div>
+<a href="{% url 'orders:complete_order' order.id %}" class="btn btn-primary">Complete Order</a>
+
+{% else %}
+    <p>Order not found.</p>
+{% endif %}
+{% endblock %}
