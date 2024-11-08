@@ -6,6 +6,7 @@ super user details
 username----description
 password----kiongozi
 
+daraja login password- Amkingdeni2@
 
 
 App	------------Models
