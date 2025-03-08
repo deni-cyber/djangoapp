@@ -47,6 +47,9 @@ work plan and progress map
 - **Task 5.2**: Set up a checkout process (shipping, billing, order summary).
 - **Task 5.3**: Implement order management (order history, tracking).
 
+
+
+
 ### **6. Payment Gateway Integration (Week 5)**
 - **Task 6.1**: Research and select a payment gateway (e.g., Stripe, PayPal).
 - **Task 6.2**: Integrate payment gateway with the checkout process.
