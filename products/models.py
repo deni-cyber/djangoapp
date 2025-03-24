@@ -42,17 +42,32 @@ class ProductImage(models.Model):
                 if os.path.isfile(old_image.path):
                     os.remove(old_image.path)
         super().save(*args, **kwargs)
+    '''def delete(self, *args, **kwargs):
+        if self.image:
+            self.image.delete(save=False)  # Deletes the file from the media folder
+        super().delete(*args, **kwargs)'''
 
     def delete(self, *args, **kwargs):
         # Check if the file exists before deleting it
         if self.image:
             if os.path.isfile(self.image.path):
                 os.remove(self.image.path)
-        super().delete(*args, **kwargs)  # Call the superclass delete method
+        super().delete(*args, **kwargs)  # Call the superclass delete method'''
 
     def __str__(self):
         return f"{self.product.name} Image"
     
+from django.db.models.signals import post_delete
+from django.dispatch import receiver
+from django.conf import settings
+
+@receiver(post_delete, sender=ProductImage)
+def delete_product_image(sender, instance, **kwargs):
+    """Deletes image file from the filesystem when ProductImage instance is deleted."""
+    if instance.image:
+        image_path = os.path.join(settings.MEDIA_ROOT, str(instance.image))
+        if os.path.exists(image_path):
+            os.remove(image_path)
 
 class Review(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='reviews')
