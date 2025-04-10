@@ -1,1 +1,52 @@
-/env
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+.venv/
+.env/
+
+# Django specific
+*.log
+db.sqlite3
+media/
+staticfiles/
+local_settings.py
+
+# VS Code
+.vscode/
+
+# Environment variables
+.env
+*.env
+
+# Pytest and coverage
+.coverage
+htmlcov/
+.tox/
+.pytest_cache/
+
+# Migrations (optional, if you don't want to track them)
+# ** But note: it's common to keep migration files in version control **
+# */migrations/*.py
+# */migrations/__pycache__/
+
+# OS-specific
+.DS_Store
+Thumbs.db
+
+# MyPy, Pylint, etc.
+.mypy_cache/
+.pyre/
+.pytype/
+.pylint.d/
+
+# IDEs
+.idea/
+*.iml
