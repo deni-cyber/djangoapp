@@ -6,7 +6,7 @@
     <title>{% block title %}My E-commerce Site{% endblock %}</title>
     <style>
         body {
-            background-color: green;
+            background-color: brown;
             text-align: center;
             color: white;
         }
@@ -31,6 +31,10 @@
             text-align: left;
             margin-left: 30%;
         }
+        nav{
+            background-color: black;
+            padding: 10px;
+        }
 
     </style>
 
@@ -41,12 +45,15 @@
         <nav>
             <a href="{% url 'home' %}">Home</a>
             <a href="{% url 'product_list' %}">Products</a>
+			<a href="{% url 'cart_detail' %}">cart</a>
+
 
             {% if user.is_authenticated %}
             <a href="{% url 'logout' %}">LogOut</a>
             <a href="{% url 'profile' %}">Profile</a>
             {% else %}
-            <a href="{% url 'login' %}">LogIn</a>
+			
+			<a href="{% url 'login' %}">LogIn</a>
             <a href="{% url 'register' %}">Register</a>
             {% endif %}
 
