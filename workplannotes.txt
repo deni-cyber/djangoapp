@@ -43,10 +43,8 @@ work plan and progress map
 
 
 ### **5. Cart and Checkout System (Week 4)**
-- **Task 5.1**: Design and implement a shopping cart system (add, update, delete items).
-- **Task 5.2**: Set up a checkout process (shipping, billing, order summary).
-
-
+- **Task 5.1**: Design and implement a shopping cart system (add, update, delete items).[done]
+- **Task 5.2**: Set up a checkout process (shipping, billing, order summary).[done]
 - **Task 5.3**: Implement order management (order history, tracking).
 
 

@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'storefront',
     'users',
     'products',
+    #'django_daraja',
 ]
 
 MIDDLEWARE = [

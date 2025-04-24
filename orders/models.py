@@ -7,6 +7,8 @@ from shipping.models import PickupPoint
 class Order(models.Model):
     STATUS_CHOICES = (
         ('Pending', 'Pending'),
+        ('Paid','Paid'),
+        ('Shipping','Shipping'),
         ('Shipped', 'Shipped'),
         ('Delivered', 'Delivered'),
         ('Cancelled', 'Cancelled'),
@@ -24,7 +26,11 @@ class Order(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
     delivery_method = models.CharField(max_length=20, choices=DELIVERY_CHOICES, default='door_delivery')
     created_at = models.DateTimeField(auto_now_add=True)
-
+    class Meta:
+        indexes = [
+            models.Index(fields=['status']),
+            models.Index(fields=['created_at']),
+        ]
     def __str__(self):
         return f"Order #{self.id} by {self.user.username}"
 

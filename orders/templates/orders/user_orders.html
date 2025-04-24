@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>complete Order</h2>
+<div>
+    {% for order in orders%}
+   <lu>
+    <li>
+        <p>{{ order}}- {{ order.created_at}}</p>
+        <p>{{order.status}}</p>
+    </li>
+   </lu>
+
+    {%endfor%}
+</div>
+
+{% endblock %}

@@ -3,8 +3,10 @@
 {% block content %}
 <h2>complete Order</h2>
 <div>
-    <p>total amount</p>
+    <p><strong> Address:{{ order.address }}</strong></p>
+    <p><strong> pickup_point:{{ order.pickup_point }}</strong></p>
     <p><strong>$ {{ order.total_amount }}</strong></p>
+    <p><strong>Status:{{ order.status }}</strong></p>
 </div>
 
 {% endblock %}
