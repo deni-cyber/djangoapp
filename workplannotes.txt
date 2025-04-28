@@ -46,14 +46,15 @@ work plan and progress map
 - **Task 5.1**: Design and implement a shopping cart system (add, update, delete items).[done]
 - **Task 5.2**: Set up a checkout process (shipping, billing, order summary).[done]
 - **Task 5.3**: Implement order management (order history, tracking).
-
+\\\\\\\\done///////////
 
 
 
 ### **6. Payment Gateway Integration (Week 5)**
-- **Task 6.1**: Research and select a payment gateway (e.g., Stripe, PayPal).
-- **Task 6.2**: Integrate payment gateway with the checkout process.
-- **Task 6.3**: Test payment process using sandbox accounts.
+- ////////**Task 6.1**: Research and select a payment gateway (e.g., Stripe, PayPal).
+- /////////**Task 6.2**: Integrate payment gateway with the checkout process.
+- /////////**Task 6.3**: Test payment process using sandbox accounts.
+
 
 ### **7. Shipping and Notifications (Week 6)**
 - **Task 7.1**: Integrate shipping provider APIs for real-time shipping rates.

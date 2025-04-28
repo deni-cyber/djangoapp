@@ -52,6 +52,11 @@
             <a href="{% url 'logout' %}">LogOut</a>
             <a href="{% url 'profile' %}">Profile</a>
             <a href="{% url 'orders:orders' %}">My orders</a>
+                {% if user.is_superuser %}
+                    <li class="nav-item">
+                        <a class="nav-link" href="{% url 'admin:index' %}" target="_blank">Admin</a>
+                    </li>
+                {% endif %}
             {% else %}
 			
 			<a href="{% url 'login' %}">LogIn</a>

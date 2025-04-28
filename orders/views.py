@@ -9,6 +9,9 @@ from cart.models import CartItem  # Import the CartItem model
 from datetime import timedelta
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
+from django_daraja.mpesa.core import MpesaClient
+from payments.models import Payment  # import your Payment model
+from users.models import Profile
 
 def checkout(request):
     if not request.user.is_authenticated:
@@ -67,29 +70,63 @@ def checkout(request):
         'pickup_points': pickup_points,
     })
 
-def order_summary(request, order_id):
-    # Fetch the order based on the order_id
-    order = get_object_or_404(Order, id=order_id, user=request.user)
 
-    # Fetch the order items associated with this order
+def pay(phone, amount):
+    import requests
+    cl = MpesaClient()
+    phone_number = phone
+    amount = amount
+    account_reference = 'ORDER'
+    transaction_desc = 'Description' 
+    callback_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+    response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
+    return (response)
+
+
+def order_summary(request, order_id):
+    order = get_object_or_404(Order, id=order_id, user=request.user)
     order_items = order.items.all()
+    profile = Profile.objects.get(user=request.user)
+    phone_number = profile.phone
+
+    if request.method == 'POST':
+        phone = request.POST.get('phone_number')
+        amount = int(order.total_amount)
+
+        # 1. Check if a Payment already exists for this Order
+        payment, created = Payment.objects.get_or_create(
+            order=order,
+            defaults={
+                'user': request.user,
+                'phone_number': phone,
+                'amount': amount,
+                'status': 'Pending',
+            }
+        )
+
+        if not created:
+            # Optional: Update phone/amount if payment exists
+            payment.phone_number = phone
+            payment.amount = amount
+            payment.status = 'Pending'
+            payment.save()
+
+        # 2. Try STK push
+        try:
+            response = pay(phone, amount)
+            messages.info(request, f"Payment request sent to {phone}. Please check your phone.")
+        except Exception as e:
+            messages.error(request, f"Error initiating payment: {e}")
 
     return render(request, 'orders/order_summary.html', {
         'order': order,
         'order_items': order_items,
+        'phone_number': phone_number, 
     })
 
 
 def complete_order(request, order_id):
-    ##### i shall use this view to initiate the payment gateway. ######
-    
-    # Fetch the order based on order_id
     order = get_object_or_404(Order, id=order_id, user=request.user)
-
-    # Optionally, create shipping info here (if using Shipping model)
-    # Shipping.objects.create(order=order, provider='Your provider', tracking_number='Your tracking number', estimated_delivery='Estimated date')
-
-    # Redirect to order summary after completing the order
     return render(request, 'orders/complete_order.html', {
             'order': order,
         })

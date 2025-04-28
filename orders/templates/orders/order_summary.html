@@ -43,6 +43,14 @@
     <h3>Total Amount</h3>
     <p><strong>$ {{ order.total_amount }}</strong></p>
 </div>
+
+<form method="post" action="{% url 'orders:order_summary' order.id %}">
+    {% csrf_token %}
+    <label>Phone Number:</label> 
+    <input type="text" name="phone_number" value="{{ phone_number }}" required>
+    <button type="submit">Pay with M-Pesa</button>
+</form>
+
 <a href="{% url 'orders:complete_order' order.id %}" class="btn btn-primary">Complete Order</a>
 
 {% else %}

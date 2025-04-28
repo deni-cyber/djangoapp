@@ -29,7 +29,6 @@ ALLOWED_HOSTS = []
 
 
 # Application definition
-
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -44,7 +43,8 @@ INSTALLED_APPS = [
     'storefront',
     'users',
     'products',
-    #'django_daraja',
+    'django_daraja',
+
 ]
 
 MIDDLEWARE = [
@@ -147,3 +147,54 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 # MEDIA_URL is the URL that serves the media files
 MEDIA_URL = '/media/'
+
+
+
+# Default primary key field type
+# https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
+
+
+
+
+DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+# The Mpesa environment to use
+# Possible values: sandbox, production
+
+MPESA_ENVIRONMENT = 'sandbox'
+
+# Credentials for the daraja app
+
+MPESA_CONSUMER_KEY = 'ONGkEihqOl3LICsoI68AWNmP7BFE0a3UhSoLQ3HtnZXjDN2l'
+MPESA_CONSUMER_SECRET = 'WCCYIhGJ092UzmH44Amq6XzIS9230AVqqy8SrvcIZ2lA4iLP0qiPCDFOEyhqULlc'
+
+#Shortcode to use for transactions. For sandbox  use the Shortcode 1 provided on test credentials page
+
+MPESA_SHORTCODE = '600982'
+
+# Shortcode to use for Lipa na MPESA Online (MPESA Express) transactions
+# This is only used on sandbox, do not set this variable in production
+# For sandbox use the Lipa na MPESA Online Shorcode provided on test credentials page
+
+MPESA_EXPRESS_SHORTCODE = '174379'
+
+# Type of shortcode
+# Possible values:
+# - paybill (For Paybill)
+# - till_number (For Buy Goods Till Number)
+
+MPESA_SHORTCODE_TYPE = 'paybill'
+
+# Lipa na MPESA Online passkey
+# Sandbox passkey is available on test credentials page
+# Production passkey is sent via email once you go live
+
+MPESA_PASSKEY = 'bfb279f9aa9bdbcf158e97dd71a467cd2e0c893059b10f78e6b72ada1ed2c919'
+
+# Username for initiator (to be used in B2C, B2B, AccountBalance and TransactionStatusQuery Transactions)
+
+MPESA_INITIATOR_USERNAME = 'initiator_username'
+
+# Plaintext password for initiator (to be used in B2C, B2B, AccountBalance and TransactionStatusQuery Transactions)
+
+MPESA_INITIATOR_SECURITY_CREDENTIAL = 'J/XRQ++TLriD8nhS7V0rD2DoQLhWGHsJmpDGAYo0NeooKRgkcr5VB/AOGCjKqeiNNrTBaHWGmgwv7Mh9bBg5Fe4S9V5lNeC5qbuKwrzYdTN7kLe0xqRKl4c+jlW22Jr8Kxg7xyzI6JMgN1hslqk+q+//BN7xME7onkATgo7QRV/uWNh+sjrvid8YRRGDfsvFquyx0QXqe5I291sliAlpoZV5hCk7VGx5JvksqHdBNRXv5jEO0MSfo49wyZ1GnBhtxQAP+Hyg/fbfzD5b3xsm06yB1ftFa9ZMcsYR50QwaELNwMsP4aGxX4/FmVQ0n95jsT0AidIlCr80YYjFubwLtQ=='
