@@ -78,10 +78,9 @@ def pay(phone, amount):
     amount = amount
     account_reference = 'ORDER'
     transaction_desc = 'Description' 
-    callback_url = 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials'
+    callback_url = 'https://f762-2c0f-2d80-206-c00-4d09-51dd-cef9-cf41.ngrok-free.app/payments/payment/'
     response = cl.stk_push(phone_number, amount, account_reference, transaction_desc, callback_url)
     return (response)
-
 
 def order_summary(request, order_id):
     order = get_object_or_404(Order, id=order_id, user=request.user)
@@ -93,35 +92,39 @@ def order_summary(request, order_id):
         phone = request.POST.get('phone_number')
         amount = int(order.total_amount)
 
-        # 1. Check if a Payment already exists for this Order
-        payment, created = Payment.objects.get_or_create(
-            order=order,
-            defaults={
-                'user': request.user,
-                'phone_number': phone,
-                'amount': amount,
-                'status': 'Pending',
-            }
-        )
+        try:
+            payment = order.payment
+            if payment.status == 'Paid':
+                messages.info(request, f"Payment for Order {order.id} has already been completed.")
+                return redirect('orders:complete_order', order_id=order.id)
+        except Payment.DoesNotExist:
+            # Create a new Payment record
+            payment = Payment.objects.create(
+                order=order,
+                user=request.user,
+                phone_number=phone,
+                amount=amount,
+                status='Pending',
+            )
 
-        if not created:
-            # Optional: Update phone/amount if payment exists
-            payment.phone_number = phone
-            payment.amount = amount
-            payment.status = 'Pending'
-            payment.save()
-
-        # 2. Try STK push
+        # Try STK Push
         try:
             response = pay(phone, amount)
+            response_data = getattr(response, 'data', {})
+
+            checkout_id = response_data.get('CheckoutRequestID')
+            if checkout_id:
+                payment.checkout_request_id = checkout_id
+                payment.save()
             messages.info(request, f"Payment request sent to {phone}. Please check your phone.")
+            return redirect('orders:complete_order', order_id=order.id)
         except Exception as e:
             messages.error(request, f"Error initiating payment: {e}")
 
     return render(request, 'orders/order_summary.html', {
         'order': order,
         'order_items': order_items,
-        'phone_number': phone_number, 
+        'phone_number': phone_number,
     })
 
 

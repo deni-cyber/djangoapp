@@ -2,42 +2,60 @@ from payments.models import Payment, PaymentCallbackLog
 from django.views.decorators.csrf import csrf_exempt
 from django.http import JsonResponse
 import json
-from payments.models import Payment, PaymentCallbackLog
-
-from payments.models import Payment, PaymentCallbackLog
 
 @csrf_exempt
 def payment_callback(request):
     if request.method == 'POST':
-        print(request.body)
-        data = json.loads(request.body)
+        try:
+            data = json.loads(request.body)
+            print('callback received', data)
 
-        # Save the full callback for future reference
-        PaymentCallbackLog.objects.create(raw_data=data)
+            # Log raw callback data
+            PaymentCallbackLog.objects.create(raw_data=data)
 
-        result_code = data['Body']['stkCallback']['ResultCode']
-        metadata = data['Body']['stkCallback'].get('CallbackMetadata', {})
+            callback = data.get('Body', {}).get('stkCallback', {})
+            result_code = callback.get('ResultCode')
+            result_desc = callback.get('ResultDesc')
+            merchant_request_id = callback.get('MerchantRequestID')
+            checkout_request_id = callback.get('CheckoutRequestID')
 
-        if result_code == 0:
-            phone_number = None
-            amount = None
-            mpesa_receipt_number = None
+            # Attempt to find the related payment
+            checkout_request_id = data['Body']['stkCallback'].get('CheckoutRequestID')
+            payment = Payment.objects.filter(checkout_request_id=checkout_request_id, status='Pending').first()
+            
+            
+            if not payment:
+                print(f"No payment found for CheckoutRequestID: {checkout_request_id}")
+                return JsonResponse({'ResultCode': 0, 'ResultDesc': 'Accepted'})
 
-            for item in metadata.get('Item', []):
-                if item['Name'] == 'PhoneNumber':
-                    phone_number = item['Value']
-                if item['Name'] == 'Amount':
-                    amount = item['Value']
-                if item['Name'] == 'MpesaReceiptNumber':
-                    mpesa_receipt_number = item['Value']
+            payment.result_desc = result_desc
+            payment.merchant_request_id = merchant_request_id
+            payment.checkout_request_id = checkout_request_id
 
-            payment = Payment.objects.filter(phone_number=phone_number, status='Pending').first()
+            if result_code == 0:
+                # Success case
+                metadata = callback.get('CallbackMetadata', {}).get('Item', [])
+                for item in metadata:
+                    name = item.get('Name')
+                    value = item.get('Value')
 
-            if payment:
-                payment.status = 'Paid'
-                payment.transaction_id = mpesa_receipt_number
+                    if name == 'MpesaReceiptNumber':
+                        payment.receipt_number = value
+                    elif name == 'PhoneNumber':
+                        payment.phone_number = value
+                    elif name == 'Amount':
+                        payment.amount = value
+                    elif name == 'TransactionDate':
+                        payment.transaction_date = str(value)
+
+                payment.status = 'Success'
                 payment.save()
-        else:
-            pass
+            else:
+                # Failed or cancelled transaction
+                payment.status = 'Failed'
+                payment.save()
+
+        except Exception as e:
+            print("Error processing payment callback:", str(e))
 
         return JsonResponse({'ResultCode': 0, 'ResultDesc': 'Accepted'})

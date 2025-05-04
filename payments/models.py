@@ -14,6 +14,7 @@ class Payment(models.Model):
     transaction_date = models.CharField(max_length=20, blank=True, null=True)
     result_desc = models.TextField(blank=True, null=True)
     status = models.CharField(max_length=20, choices=[('Pending', 'Pending'), ('Success', 'Success'), ('Failed', 'Failed')], default='Pending')
+    checkout_request_id = models.CharField(max_length=100, blank=True, null=True)
 
     created_at = models.DateTimeField(auto_now_add=True)
 

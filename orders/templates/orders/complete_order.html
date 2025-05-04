@@ -8,5 +8,6 @@
     <p><strong>$ {{ order.total_amount }}</strong></p>
     <p><strong>Status:{{ order.status }}</strong></p>
 </div>
+<a href="{% url 'orders:complete_order' order.id %}" class="btn btn-primary">Complete Order</a>
 
 {% endblock %}
